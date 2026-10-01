@@ -68,6 +68,38 @@
 
   .card.disabled{opacity:.6;box-shadow:none;background:transparent;border-style:dashed}
 
+  /* Contact (LINE OA) */
+  .section{margin-top:30px}
+  .section:first-child{margin-top:0}
+  .sec-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:18px;font-weight:600;margin:0 0 12px 2px}
+  .sec-n{width:26px;height:26px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font-size:14px;font-weight:700}
+  .sec-en{font-size:12.5px;font-weight:600;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+  .ic.line{background:#06C755}
+  .ic.line svg{stroke:none;fill:#fff;width:30px;height:30px}
+  .line-btn{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 14px;border-radius:999px;background:#06C755;color:#fff;font-size:14px;font-weight:600}
+
+  /* Add to Home Screen */
+  .a2hs{display:none;align-items:center;gap:14px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:18px;padding:14px 16px;margin-bottom:20px}
+  .a2hs.show{display:flex}
+  .a2hs img{width:44px;height:44px;border-radius:11px;flex:none;border:1px solid var(--line);background:#fff}
+  .a2hs .txt{flex:1;min-width:0}
+  .a2hs .t1{font-weight:600;font-size:15.5px;line-height:1.3}
+  .a2hs .t2{font-size:13.5px;color:var(--ink-2)}
+  .btn{font:inherit;font-weight:600;font-size:14.5px;border:0;border-radius:999px;padding:9px 16px;background:var(--ink);color:#fff;cursor:pointer;white-space:nowrap}
+  .x{font:inherit;border:0;background:none;color:var(--ink-3);font-size:22px;line-height:1;padding:4px;cursor:pointer;align-self:flex-start}
+
+  .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:flex-end;justify-content:center;z-index:50}
+  .sheet-bg.show{display:flex}
+  .sheet{background:#fff;width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom))}
+  .sheet h2{font-size:19px;font-weight:600;margin-bottom:14px}
+  .sheet ol{list-style:none;display:grid;gap:12px;margin-bottom:18px}
+  .sheet li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
+  .sheet .n{width:26px;height:26px;border-radius:50%;background:var(--accent);font-weight:700;font-size:14px;display:grid;place-items:center;flex:none}
+  .sheet .k{display:inline-flex;align-items:center;gap:4px;font-weight:600;background:#F5ECEE;border-radius:6px;padding:0 6px}
+  .sheet .k svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:2}
+  .sheet .note{font-size:13.5px;color:var(--ink-3);margin:-6px 0 16px}
+  .sheet .btn{width:100%;padding:12px}
+
   footer{border-top:1px solid var(--line);background:var(--card)}
   .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;flex-wrap:wrap}
   .foot img{height:44px;width:auto}
@@ -98,40 +130,67 @@
 
 <main>
   <div class="wrap">
-    <div class="label">Applications · ระบบงาน</div>
-    <div class="grid" id="grid"></div>
+    <div class="a2hs" id="a2hs">
+      <img src="assets/apple-touch-icon.png" alt="">
+      <div class="txt">
+        <div class="t1">เพิ่ม SMART Med ไว้ที่หน้าจอโฮม</div>
+        <div class="t2">เปิดใช้งานได้ทันทีเหมือนแอป</div>
+      </div>
+      <button class="btn" id="a2hsBtn">เพิ่ม</button>
+      <button class="x" id="a2hsX" aria-label="ปิด">×</button>
+    </div>
+
+    <div id="sections"></div>
   </div>
 </main>
+
+<div class="sheet-bg" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet">
+    <h2 id="sheetTitle">เพิ่มไปยังหน้าจอโฮม</h2>
+    <ol id="steps"></ol>
+    <p class="note" id="sheetNote"></p>
+    <button class="btn" id="sheetClose">เข้าใจแล้ว</button>
+  </div>
+</div>
 
 <footer>
   <div class="wrap foot">
     <img src="assets/logo-full.png" alt="Internal Medicine UDH">
-    <p>กลุ่มงานอายุรกรรม โรงพยาบาลอุดรธานี</p>
+    <p>กลุ่มงานอายุรกรรม โรงพยาบาลอุดรธานี<span id="a2hsFoot" hidden> · <a href="#" style="text-decoration:underline">เพิ่มไปหน้าจอโฮม</a></span></p>
   </div>
 </footer>
 
 <script>
 /* ==========================================================
-   EDIT LINKS HERE — to add or change an app, edit this list.
+   EDIT LINKS HERE — sections and the apps inside them.
+   Order on the page = order in this list.
    url: "" shows the card as "เร็วๆ นี้ / Coming soon".
    ========================================================== */
-const APPS = [
-  { name: "Internal Medicine Staff Workload", th: "ระบบจัดการภาระงาน อายุรแพทย์ อุดรธานี", icon: "workload",
-    url: "https://script.google.com/macros/s/AKfycbxux2XveRPBZtseeyiT2RPlOIVHmk75z3TrhTPP3xA-fYs7492Uh89jF_rM3UaaYfzteQ/exec" },
-  { name: "Consult Med UDH", th: "ระบบปรึกษาอายุรกรรม อุดรธานี", icon: "consult",
-    url: "https://script.google.com/macros/s/AKfycbztzi1eQELUaGIJJQBV8xUlo713mL523KpYpZ9hmjnI6gFl2-kq1L7CZmguVbQ7JhBKEw/exec" },
-  { name: "Sepsis UDH", th: "ระบบรายงานผู้ป่วย Sepsis", icon: "sepsis", group: [
-      { name: "Sepsis Mortality Report", th: "รายงานเคสผู้ป่วย Sepsis เสียชีวิต",
-        url: "https://script.google.com/macros/s/AKfycbzoh0KIqiG-2p2_AS_m4CE08-GF5jBf5UWqFFkBXjV5fNnGPGlRRVsCnwuLsDHBDIUP/exec" },
-      { name: "Sepsis Tracker", th: "รายงานเคสผู้ป่วย Sepsis, pneumonia",
-        url: "https://script.google.com/macros/s/AKfycbz-Qrq9gAYlqvueQIRVUpK8FeiXU9FhI6b43TBajVKFcQquDh3ZijlpznY3HV1QWI0D/exec" }
+const SECTIONS = [
+  { title: "สำหรับบุคลากรทั่วไป", en: "For all staff", apps: [
+    { name: "Consult Med UDH", th: "ระบบปรึกษาอายุรกรรม อุดรธานี", icon: "consult",
+      url: "https://script.google.com/macros/s/AKfycbztzi1eQELUaGIJJQBV8xUlo713mL523KpYpZ9hmjnI6gFl2-kq1L7CZmguVbQ7JhBKEw/exec" },
+    { name: "Classroom Reservation", th: "จองห้องประชุม อายุรกรรมอุดรธานี", icon: "room",
+      url: "https://script.google.com/macros/s/AKfycbx4DJCuDu0VUoQSDid24VXr9QxvQvGRLx4Sw41f6Cpw8CHRlGOOs4exMVmMPY5ut7mU/exec" },
+    { name: "SMART ICU UDH", th: "จองเตียง ICU รพ.อุดรธานี", icon: "icu", tag: "ระบบ รพ.",
+      url: "https://www.smartudh.com" },
+    { name: "RapID", th: "ระบบช่วยตัดสินใจ การให้ยา antibiotics", icon: "abx",
+      url: "https://rapidv3.vercel.app" },
+    { name: "LINE Official Account", th: "อายุรกรรมอุดรธานี", icon: "line", line: true,
+      url: "https://lin.ee/OLBnJsf" }
   ]},
-  { name: "Classroom Reservation", th: "จองห้องประชุม อายุรกรรมอุดรธานี", icon: "room",
-    url: "https://script.google.com/macros/s/AKfycbx4DJCuDu0VUoQSDid24VXr9QxvQvGRLx4Sw41f6Cpw8CHRlGOOs4exMVmMPY5ut7mU/exec" },
-  { name: "SMART ICU UDH", th: "จองเตียง ICU รพ.อุดรธานี", icon: "icu", tag: "ระบบ รพ.",
-    url: "https://www.smartudh.com" },
-  { name: "RapID", th: "ระบบช่วยตัดสินใจ การให้ยา antibiotics", icon: "abx",
-    url: "https://rapidv3.vercel.app" }
+  { title: "สำหรับ Service plan sepsis", en: "Sepsis service plan", apps: [
+    { name: "Sepsis UDH", th: "ระบบรายงานผู้ป่วย Sepsis", icon: "sepsis", group: [
+        { name: "Sepsis Mortality Report", th: "รายงานเคสผู้ป่วย Sepsis เสียชีวิต",
+          url: "https://script.google.com/macros/s/AKfycbzoh0KIqiG-2p2_AS_m4CE08-GF5jBf5UWqFFkBXjV5fNnGPGlRRVsCnwuLsDHBDIUP/exec" },
+        { name: "Sepsis Tracker", th: "รายงานเคสผู้ป่วย Sepsis, pneumonia",
+          url: "https://script.google.com/macros/s/AKfycbz-Qrq9gAYlqvueQIRVUpK8FeiXU9FhI6b43TBajVKFcQquDh3ZijlpznY3HV1QWI0D/exec" }
+    ]}
+  ]},
+  { title: "สำหรับอายุรแพทย์", en: "For internists", apps: [
+    { name: "Internal Medicine Staff Workload", th: "ระบบจัดการภาระงาน อายุรแพทย์ อุดรธานี", icon: "workload",
+      url: "https://script.google.com/macros/s/AKfycbxux2XveRPBZtseeyiT2RPlOIVHmk75z3TrhTPP3xA-fYs7492Uh89jF_rM3UaaYfzteQ/exec" }
+  ]}
 ];
 
 const ICONS = {
@@ -140,14 +199,15 @@ const ICONS = {
   sepsis:'<path d="M3 12h4l2-5 4 10 2-5h6"/>',
   room:'<path d="M4 20.5V6.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/><path d="M2.5 20.5h19M9 10h6M9 14h6"/>',
   icu:'<path d="M3 18V7M3 13h18v5M21 13a3 3 0 0 0-3-3h-7v3"/><circle cx="7" cy="10.5" r="1.8"/>',
+  line:'<path d="M12 3.2c-5 0-9 3.3-9 7.4 0 3.7 3.2 6.8 7.6 7.3.3.1.7.2.8.5.1.2.1.6 0 .9l-.1.8c0 .2-.2.9.8.5s5.5-3.3 7.5-5.6c1.4-1.5 2.4-3 2.4-4.4 0-4.1-4-7.4-9-7.4z"/>',
   abx:'<rect x="2.8" y="8.6" width="18.4" height="6.8" rx="3.4" transform="rotate(-45 12 12)"/><path d="M9.6 9.6l4.8 4.8"/>'
 };
 const ARROW = '<path d="M7 17L17 7M9 7h8v8"/>';
 const svg = (p, cls) => `<svg viewBox="0 0 24 24" ${cls?`class="${cls}"`:''} aria-hidden="true">${p}</svg>`;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-document.getElementById('grid').innerHTML = APPS.map(a => {
-  const icon = `<div class="ic">${svg(ICONS[a.icon] || ICONS.sepsis)}</div>`;
+const card = a => {
+  const icon = `<div class="ic${a.line?' line':''}">${svg(ICONS[a.icon] || ICONS.sepsis)}</div>`;
   if (a.group) {
     return `<div class="card group">
       <div class="top">${icon}<div class="body"><div class="name">${esc(a.name)}</div><div class="thname">${esc(a.th)}</div></div></div>
@@ -158,11 +218,84 @@ document.getElementById('grid').innerHTML = APPS.map(a => {
       </div></div>`;
   }
   const tag = a.url ? (a.tag ? `<span class="tag">${esc(a.tag)}</span>` : '') : '<span class="tag soon">เร็วๆ นี้</span>';
-  const inner = `${icon}<div class="body"><div class="name">${esc(a.name)} ${tag}</div><div class="thname">${esc(a.th)}</div></div>`;
+  const extra = a.line ? '<span class="line-btn">+ เพิ่มเพื่อน</span>' : '';
+  const inner = `${icon}<div class="body"><div class="name">${esc(a.name)} ${tag}</div><div class="thname">${esc(a.th)}</div>${extra}</div>`;
   return a.url
     ? `<a class="card" href="${esc(a.url)}" target="_blank" rel="noopener">${inner}${svg(ARROW,'arrow')}</a>`
     : `<div class="card disabled" aria-disabled="true">${inner}</div>`;
-}).join('');
+};
+
+document.getElementById('sections').innerHTML = SECTIONS.map((sec, i) => `
+  <section class="section">
+    <h2 class="sec-h"><span class="sec-n">${i + 1}</span>${esc(sec.title)}<span class="sec-en">${esc(sec.en || '')}</span></h2>
+    <div class="grid">${sec.apps.map(card).join('')}</div>
+  </section>`).join('');
+
+/* ---------- Add to Home Screen ---------- */
+(function () {
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  const inApp = /Line\/|FBAN|FBAV|Instagram/i.test(ua);           // LINE / Facebook in-app browser
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const banner = document.getElementById('a2hs'), sheet = document.getElementById('sheet');
+  let deferred = null, dismissed = false;
+  try { dismissed = localStorage.getItem('a2hs-dismissed') === '1'; } catch (e) {}
+
+  if (standalone || !(isIOS || isAndroid)) return;
+  if (!dismissed) banner.classList.add('show');
+  const foot = document.getElementById('a2hsFoot');
+  foot.hidden = false;
+  foot.querySelector('a').onclick = e => { e.preventDefault(); document.getElementById('a2hsBtn').onclick(); };
+
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; });
+  window.addEventListener('appinstalled', () => banner.classList.remove('show'));
+
+  const share = '<span class="k"><svg viewBox="0 0 24 24"><path d="M12 15V3M8 7l4-4 4 4M5 11v9h14v-9"/></svg>แชร์</span>';
+  const dots  = '<span class="k">⋮</span>';
+  const step  = (n, html) => `<li><span class="n">${n}</span><span>${html}</span></li>`;
+
+  function show() {
+    let steps, note = '';
+    if (inApp) {
+      steps = [
+        `กดปุ่ม ${isIOS ? '<span class="k">⋯</span> หรือ ' + share : dots} มุมขวา`,
+        `เลือก <b>เปิดใน${isIOS ? ' Safari' : ' Chrome'}</b> (Open in browser)`,
+        'กดปุ่ม <b>เพิ่ม</b> บนหน้านี้อีกครั้ง'
+      ];
+      note = 'ต้องเปิดผ่านเบราว์เซอร์ก่อน แอป LINE ไม่สามารถเพิ่มไปหน้าจอโฮมได้โดยตรง';
+    } else if (isIOS) {
+      steps = [
+        `กดปุ่ม ${share} ด้านล่าง (หรือด้านบน) ของ Safari`,
+        'เลื่อนลงแล้วเลือก <b>เพิ่มไปยังหน้าจอโฮม</b> (Add to Home Screen)',
+        'กด <b>เพิ่ม</b> มุมขวาบน'
+      ];
+      note = 'ต้องเปิดด้วย Safari บน iPhone/iPad';
+    } else {
+      steps = [
+        `กดปุ่ม ${dots} มุมขวาบนของ Chrome`,
+        'เลือก <b>เพิ่มลงในหน้าจอหลัก</b> หรือ <b>ติดตั้งแอป</b>',
+        'กด <b>เพิ่ม</b> / <b>ติดตั้ง</b>'
+      ];
+    }
+    document.getElementById('steps').innerHTML = steps.map((s, i) => step(i + 1, s)).join('');
+    document.getElementById('sheetNote').textContent = note;
+    sheet.classList.add('show');
+  }
+
+  document.getElementById('a2hsBtn').onclick = async () => {
+    if (deferred) { deferred.prompt(); await deferred.userChoice; deferred = null; return; }
+    show();
+  };
+  document.getElementById('a2hsX').onclick = () => {
+    banner.classList.remove('show');
+    try { localStorage.setItem('a2hs-dismissed', '1'); } catch (e) {}
+  };
+  document.getElementById('sheetClose').onclick = () => sheet.classList.remove('show');
+  sheet.onclick = e => { if (e.target === sheet) sheet.classList.remove('show'); };
+})();
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
 </html>
